@@ -6,13 +6,12 @@ const cart = (function ($) {
     const productList = cartData.products;
     const texts = cartData.texts;
 
-    // cart head
-    const cartHead = function(texts) {
-        return `<!-- Title --><div class="cart-title title">${texts.checkoutTitle}</div>`;
-    };
-    // cart content
-    const cartContent = function(productList) {
-        const itemList = productList.map(product => {
+    // templates
+    const templates = {
+        header: texts => {
+            return `<!-- Title --><div class="cart-title title">${texts.checkoutTitle}</div>`;
+        },
+        item: product => {
             return `<!-- Product -->
             <div class="item" data-product_id="${product.id}">
                 <div class="item-detail">
@@ -37,13 +36,10 @@ const cart = (function ($) {
                     </span>
                     <img src="${product.img}" alt="${product.title}" />
                 </div>
-            </div>`
-        }).join('');
-        return `<!-- Content --><div class="item-list">${itemList}</div>`;
-    };
-    // cart footer
-    const cartFooter = function (texts) {
-        return `<!-- Additionally --><div class="cart-additionally">
+            </div>`;
+        },
+        footer: texts => {
+            return `<!-- Additionally --><div class="cart-additionally">
             <div class="quantity-all">
                 <span class="quantity-all-title">${texts.quantity}</span>
                 <span class="quantity-all-count"></span>
@@ -54,11 +50,51 @@ const cart = (function ($) {
                 <span class="total-price-currency">${texts.currency}</span>
             </div>
         </div>`
+        },
+        empty: () => {
+            return `<div class="cart-empty-img"><img src="img/shopping-cart.svg"></div>`;
+        },
+    };
+
+    // cart head
+    const getHeadTemplate = (texts) => {
+        return templates.header({
+            checkoutTitle: texts.checkoutTitle
+        });
+    };
+
+    // cart content
+    const getCartContent = function(productList) {
+        const itemList = productList.map(product => {
+            return templates.item({
+                id: product.id,
+                title: product.title,
+                count: product.count,
+                price: product.price,
+                img: product.img,
+                currency: texts.currency
+            })
+        }).join('');
+        return `<!-- Content --><div class="item-list">${itemList}</div>`;
+    };
+
+    // cart footer
+    const getFooterTemplate = (texts) => {
+        return templates.footer({
+            quantity: texts.quantity,
+            totalSum: texts.totalSum,
+            currency: texts.currency
+        });
+    };
+
+    // cart empty
+    const getEmptyTemplate = () => {
+        return templates.empty();
     };
 
     // render cart
     const render = function () {
-        let content = [cartHead(texts), cartContent(productList), cartFooter(texts)];
+        let content = [getHeadTemplate(texts), getCartContent(productList), getFooterTemplate(texts)];
         $('#root').html(content);
         quantity();
     };
@@ -161,7 +197,7 @@ const cart = (function ($) {
     // empty cart
     const emptyCart = function () {
         if(productList.length === 0){
-            $('.item-list').html('<div class="cart-empty-img"><img src="img/shopping-cart.svg"></div>');
+            $('.item-list').html(getEmptyTemplate());
             $('.quantity-all').html(texts.cartEmpty);
             $('.total-price-count').text(0);
         }
