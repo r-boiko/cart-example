@@ -125,7 +125,8 @@ let cart = (function ($) {
         for(let i = 0; i < arrProduct.length; i++){
             sumPrice += arrProduct[i];
         }
-        $('.total-price-count').text(sumPrice + texts.currency);
+        $('.total-price-count').text(sumPrice);
+        $('.total-price-currency').text(texts.currency);
     };
 
     // quantity
@@ -147,7 +148,7 @@ let cart = (function ($) {
         if(productList.length === 0){
             $('.item-list').html('<div class="cart-empty-img"><img src="img/shopping-cart.svg"></div>');
             $('.quantity-all').html(texts.cartEmpty);
-            $('.total-price-count').text(0 + texts.currency);
+            $('.total-price-count').text(0);
         }
     };
 

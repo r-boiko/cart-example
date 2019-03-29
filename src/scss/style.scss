@@ -30,6 +30,7 @@ body {
   .title{
     font-size: 1.5em;
     font-weight: bold;
+    margin-bottom: 1rem;
   }
   .item-list{
     min-height: 165px;
@@ -114,6 +115,9 @@ body {
     .quantity-all{
       font-size: .8em;
       color: $text-gray;
+    }
+    .total-price-count{
+      font-weight: bold;
     }
     .quantity-all-title, .total-price-title{
       &:after{
