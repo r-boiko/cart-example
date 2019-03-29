@@ -6,11 +6,6 @@ let cart = (function ($) {
     let productList = cartData.products;
     let texts = cartData.texts;
 
-    // texts init
-    $('.cart-title').text(texts.checkoutTitle);
-    $('.quantity-all-title').text(texts.quantity);
-    $('.total-price-title').text(texts.totalSum);
-
     // create product
     function createProduct(product) {
         return `<!-- Product -->
@@ -40,15 +35,20 @@ let cart = (function ($) {
             </div>`
     }
 
-    // render products
+    // render cart
     let render = function () {
+        // texts init
+        $('.cart-title').text(texts.checkoutTitle);
+        $('.quantity-all-title').text(texts.quantity);
+        $('.total-price-title').text(texts.totalSum);
+        // products init
         let templates = productList.map(product => createProduct(product));
         let html = templates.join('');
         $('.item-list').html(html);
         quantity();
     };
 
-    // remove products
+    // remove product
     let remove = function (id) {
         productList.map(function (product) {
             if (product.id === id) {
@@ -64,7 +64,7 @@ let cart = (function ($) {
         }, 300)
     };
 
-    // increment products
+    // increment product
     let increment = function (id) {
         productList.map(function (product) {
             if (product.id === id) {
@@ -83,7 +83,7 @@ let cart = (function ($) {
         price(id);
     };
 
-    // decrement products
+    // decrement product
     let decrement = function (id) {
         productList.map(function (product) {
             if (product.id === id) {
@@ -152,10 +152,22 @@ let cart = (function ($) {
         }
     };
 
-    // find element for remove
+    // find element
     function findElementByID(id) {
         return $('.item-list').find(`.item[data-product_id="${id}"]`);
     }
+
+    // click event
+    $(document).on('click', '.delete-btn', function () {
+        cart.remove($(this).data('product_id'));
+    });
+    $(document).on('click', '.plus-btn', function () {
+        cart.increment($(this).data('product_id'));
+    });
+    $(document).on('click', '.minus-btn', function () {
+        cart.decrement($(this).data('product_id'));
+    });
+
     return {
         render: render,
         remove: remove,
@@ -164,19 +176,8 @@ let cart = (function ($) {
     }
 
 })(jQuery);
+
 cart.render();
-
-$(document).on('click', '.delete-btn', function () {
-    cart.remove($(this).data('product_id'));
-});
-
-$(document).on('click', '.plus-btn', function () {
-    cart.increment($(this).data('product_id'));
-});
-
-$(document).on('click', '.minus-btn', function () {
-    cart.decrement($(this).data('product_id'));
-});
 
 
 
