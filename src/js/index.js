@@ -9,7 +9,7 @@ const cart = (function ($) {
     // templates
     const templates = {
         header: texts => {
-            return `<!-- Title --><div class="cart-title title">${texts.checkoutTitle}</div>`;
+            return `<!-- Header --><div class="cart-header"><!-- Title --><div class="cart-title title">${texts.checkoutTitle}</div></div>`;
         },
         item: product => {
             return `<!-- Product -->
@@ -39,7 +39,7 @@ const cart = (function ($) {
             </div>`;
         },
         footer: texts => {
-            return `<!-- Additionally --><div class="cart-additionally">
+            return `<!-- Footer --><div class="cart-footer"><!-- Additionally --><div class="cart-additionally">
             <div class="quantity-all">
                 <span class="quantity-all-title">${texts.quantity}</span>
                 <span class="quantity-all-count"></span>
@@ -49,7 +49,7 @@ const cart = (function ($) {
                 <span class="total-price-count"></span>
                 <span class="total-price-currency">${texts.currency}</span>
             </div>
-        </div>`
+        </div></div>`
         },
         empty: () => {
             return `<div class="cart-empty-img"><img src="img/shopping-cart.svg"></div>`;
