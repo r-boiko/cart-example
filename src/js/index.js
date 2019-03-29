@@ -1,10 +1,10 @@
 import 'jquery';
 import cartData from './storage'
 
-let cart = (function ($) {
+const cart = (function ($) {
     // storage
-    let productList = cartData.products;
-    let texts = cartData.texts;
+    const productList = cartData.products;
+    const texts = cartData.texts;
 
     // create product
     function createProduct(product) {
@@ -14,11 +14,11 @@ let cart = (function ($) {
                     <div class="item-title">${product.title}</div>
                     <div class="quantity-wrap">
                         <div class="quantity">
-                            <span class="minus-btn" data-product_id="${product.id}">
+                            <span class="minus-btn" data-product_id="${product.id}" data-action='{"name": "decrement", "id": ${product.id}}'>
                                 <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="minus" class="icon svg-inline--fa fa-minus fa-w-14" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M416 208H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h384c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"></path></svg>
                             </span>
                             <span class="quantity-number">${product.count}</span>
-                            <span class="plus-btn" data-product_id="${product.id}">
+                            <span class="plus-btn" data-product_id="${product.id}" data-action='{"name": "increment", "id": ${product.id}}'>
                                 <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" class="icon svg-inline--fa fa-plus fa-w-14" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"></path></svg>
                             </span>
                         </div>
@@ -27,7 +27,7 @@ let cart = (function ($) {
                     <div class="item-price"><span class="price">${product.price * product.count}</span> <span class="currency">${texts.currency}</span></div>
                 </div>
                 <div class="item-image">
-                    <span class="delete-btn" data-product_id="${product.id}">
+                    <span class="delete-btn" data-product_id="${product.id}" data-action='{"name": "remove", "id": ${product.id}}'>
                         <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="times" class="icon svg-inline--fa fa-times fa-w-11" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 352 512"><path fill="currentColor" d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z"></path></svg>
                     </span>
                     <img src="${product.img}" alt="${product.title}" />
@@ -36,7 +36,7 @@ let cart = (function ($) {
     }
 
     // render cart
-    let render = function () {
+    const render = function () {
         // texts init
         $('.cart-title').text(texts.checkoutTitle);
         $('.quantity-all-title').text(texts.quantity);
@@ -49,7 +49,7 @@ let cart = (function ($) {
     };
 
     // remove product
-    let remove = function (id) {
+    const remove = function (id) {
         productList.map(function (product) {
             if (product.id === id) {
                 let positionElement = productList.indexOf(product);
@@ -65,7 +65,7 @@ let cart = (function ($) {
     };
 
     // increment product
-    let increment = function (id) {
+    const increment = function (id) {
         productList.map(function (product) {
             if (product.id === id) {
                 let productCount = product.count;
@@ -84,7 +84,7 @@ let cart = (function ($) {
     };
 
     // decrement product
-    let decrement = function (id) {
+    const decrement = function (id) {
         productList.map(function (product) {
             if (product.id === id) {
                 let productCount = product.count;
@@ -105,7 +105,7 @@ let cart = (function ($) {
     };
 
     // price
-    let price = function (id) {
+    const price = function (id) {
         productList.map(function (product) {
             if (product.id === id) {
                 let productPrice = product.count * product.price;
@@ -117,7 +117,7 @@ let cart = (function ($) {
     };
 
     // total price
-    let totalPrice = function () {
+    const totalPrice = function () {
         let arrProduct = productList.map(function (product) {
             return product.count * product.price;
         });
@@ -130,7 +130,7 @@ let cart = (function ($) {
     };
 
     // quantity
-    let quantity = function () {
+    const quantity = function () {
         let arrQuantity = productList.map(function (product) {
             return product.count;
         });
@@ -144,7 +144,7 @@ let cart = (function ($) {
     };
 
     // empty cart
-    let emptyCart = function () {
+    const emptyCart = function () {
         if(productList.length === 0){
             $('.item-list').html('<div class="cart-empty-img"><img src="img/shopping-cart.svg"></div>');
             $('.quantity-all').html(texts.cartEmpty);
@@ -158,14 +158,16 @@ let cart = (function ($) {
     }
 
     // click event
-    $(document).on('click', '.delete-btn', function () {
-        cart.remove($(this).data('product_id'));
-    });
-    $(document).on('click', '.plus-btn', function () {
-        cart.increment($(this).data('product_id'));
-    });
-    $(document).on('click', '.minus-btn', function () {
-        cart.decrement($(this).data('product_id'));
+    const clickAction = ({name, id}) => {
+        switch (name) {
+            case 'decrement': decrement(id); break;
+            case 'increment': increment(id); break;
+            case 'remove': remove(id);
+        }
+    };
+    $('.item-list').on('click', 'span[data-action]', e => {
+        const action = JSON.parse(e.target.dataset.action);
+        clickAction(action);
     });
 
     return {
