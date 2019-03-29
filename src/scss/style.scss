@@ -38,6 +38,10 @@ body {
     border-bottom: 1px solid $text-black;
     padding-bottom: 0.5rem;
     margin-bottom: 1rem;
+    transition: all .3s;
+    &.remove{
+      opacity: 0;
+    }
     .item-detail{
       .item-title{
         color: $text-gray;
@@ -77,12 +81,14 @@ body {
       position: relative;
       .delete-btn{
         cursor: pointer;
-        width: 15px;
-        height: 15px;
         position: absolute;
         right: .5rem;
         top: .5rem;
-        color: $text-red;
+        .icon{
+          width: 15px;
+          height: 15px;
+          color: $text-red;
+        }
       }
     }
   }
@@ -93,6 +99,11 @@ body {
     .quantity-all{
       font-size: .8em;
       color: $text-gray;
+    }
+    .quantity-all-title, .total-price-title{
+      &:after{
+        content: ':';
+      }
     }
   }
 }
