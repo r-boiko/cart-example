@@ -11,7 +11,7 @@ const cart = (function ($) {
         return `<!-- Title --><div class="cart-title title">${texts.checkoutTitle}</div>`;
     };
     // cart content
-    const cartContent = function() {
+    const cartContent = function(productList) {
         const itemList = productList.map(product => {
             return `<!-- Product -->
             <div class="item" data-product_id="${product.id}">
@@ -58,7 +58,7 @@ const cart = (function ($) {
 
     // render cart
     const render = function () {
-        let content = [cartHead(texts), cartContent(), cartFooter(texts)];
+        let content = [cartHead(texts), cartContent(productList), cartFooter(texts)];
         $('#root').html(content);
         quantity();
     };
