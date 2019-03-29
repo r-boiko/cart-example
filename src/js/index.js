@@ -6,9 +6,14 @@ const cart = (function ($) {
     const productList = cartData.products;
     const texts = cartData.texts;
 
-    // create product
-    function createProduct(product) {
-        return `<!-- Product -->
+    // cart head
+    const cartHead = function(texts) {
+        return `<!-- Title --><div class="cart-title title">${texts.checkoutTitle}</div>`;
+    };
+    // cart content
+    const cartContent = function() {
+        const itemList = productList.map(product => {
+            return `<!-- Product -->
             <div class="item" data-product_id="${product.id}">
                 <div class="item-detail">
                     <div class="item-title">${product.title}</div>
@@ -33,18 +38,28 @@ const cart = (function ($) {
                     <img src="${product.img}" alt="${product.title}" />
                 </div>
             </div>`
-    }
+        }).join('');
+        return `<!-- Content --><div class="item-list">${itemList}</div>`;
+    };
+    // cart footer
+    const cartFooter = function (texts) {
+        return `<!-- Additionally --><div class="cart-additionally">
+            <div class="quantity-all">
+                <span class="quantity-all-title">${texts.quantity}</span>
+                <span class="quantity-all-count"></span>
+            </div>
+            <div class="total-price">
+                <span class="total-price-title">${texts.totalSum}</span>
+                <span class="total-price-count"></span>
+                <span class="total-price-currency">${texts.currency}</span>
+            </div>
+        </div>`
+    };
 
     // render cart
     const render = function () {
-        // texts init
-        $('.cart-title').text(texts.checkoutTitle);
-        $('.quantity-all-title').text(texts.quantity);
-        $('.total-price-title').text(texts.totalSum);
-        // products init
-        let templates = productList.map(product => createProduct(product));
-        let html = templates.join('');
-        $('.item-list').html(html);
+        let content = [cartHead(texts), cartContent(), cartFooter(texts)];
+        $('#root').html(content);
         quantity();
     };
 
@@ -165,7 +180,7 @@ const cart = (function ($) {
             case 'remove': remove(id);
         }
     };
-    $('.item-list').on('click', 'span[data-action]', e => {
+    $('.shopping-cart').on('click', 'span[data-action]', e => {
         const action = JSON.parse(e.target.dataset.action);
         clickAction(action);
     });
